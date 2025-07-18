@@ -16,7 +16,7 @@ export default function Home() {
     }
   }, []);
 
-  const handleGameSelection = (gameType) => {
+  const handleGameSelection = (gameType: 'omok' | 'sudoku' | 'baseball') => {
     if (!currentUser) {
       alert("먼저 로그인해주세요!");
       return;
