@@ -2,15 +2,21 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+interface User {
+  id: string;
+  nickname: string;
+  isGuest: boolean;
+}
+
 export default function Home() {
   const router = useRouter();
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [nicknameInput, setNicknameInput] = useState('');
 
   useEffect(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
-      const user = JSON.parse(savedUser);
+      const user: User = JSON.parse(savedUser);
       setCurrentUser(user);
       sessionStorage.setItem("playerNickname", user.nickname);
     }
@@ -38,7 +44,7 @@ export default function Home() {
   const confirmGuestNickname = () => {
     const nickname = nicknameInput.trim();
     if (nickname.length >= 2 && nickname.length <= 10) {
-      const guestUser = { id: `guest_${Date.now()}`, nickname, isGuest: true };
+      const guestUser: User = { id: `guest_${Date.now()}`, nickname, isGuest: true };
       setCurrentUser(guestUser);
       localStorage.setItem("currentUser", JSON.stringify(guestUser));
       sessionStorage.setItem("playerNickname", guestUser.nickname);
