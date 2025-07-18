@@ -14,10 +14,8 @@ const Home: FC = () => {
   const router = useRouter();
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
-  
   const [nicknameInput, setNicknameInput] = useState('');
 
   useEffect(() => {
@@ -54,18 +52,18 @@ const Home: FC = () => {
       alert("닉네임은 2~10글자로 입력해주세요.");
     }
   };
-  
+
   const handleGameSelection = (gameType: string) => {
     if (!currentUser) {
       alert("먼저 로그인해주세요!");
       setLoginModalOpen(true);
       return;
     }
-    
+
     if (gameType === 'omok') {
-        router.push('/omok');
+      router.push('/omok');
     } else {
-        router.push(`/${gameType}-setup`);
+      router.push(`/${gameType}-setup`);
     }
   };
 
@@ -79,11 +77,11 @@ const Home: FC = () => {
               <button className="modal-close" onClick={() => setLoginModalOpen(false)}>&times;</button>
             </div>
             <div className="modal-body">
-              <p style={{textAlign: 'center', marginBottom: '1.5rem', color: '#666'}}>
+              <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
                 서비스를 이용하시려면 로그인해주세요.
               </p>
-              <div className="mode-options" style={{gridTemplateColumns: '1fr'}}>
-                <div className="mode-card" onClick={handleGuestLogin} style={{cursor: 'pointer'}}>
+              <div className="mode-options" style={{ gridTemplateColumns: '1fr' }}>
+                <div className="mode-card" onClick={handleGuestLogin} style={{ cursor: 'pointer' }}>
                   <div className="mode-icon">👤</div>
                   <h4>게스트로 시작하기</h4>
                   <p>간편하게 닉네임만 설정하고 시작합니다.</p>
@@ -103,15 +101,15 @@ const Home: FC = () => {
             <div className="modal-body nickname-setup">
               <p>사용하실 닉네임을 입력해주세요.</p>
               <div className="form-group">
-                <input 
-                  type="text" 
-                  id="guest-nickname-input" 
-                  placeholder="2~10글자" 
+                <input
+                  type="text"
+                  id="guest-nickname-input"
+                  placeholder="2~10글자"
                   value={nicknameInput}
                   onChange={(e) => setNicknameInput(e.target.value)}
                 />
               </div>
-              <button className="btn btn-primary" style={{width: '100%'}} onClick={confirmGuestNickname}>확인</button>
+              <button className="btn btn-primary" style={{ width: '100%' }} onClick={confirmGuestNickname}>확인</button>
             </div>
           </div>
         </div>
@@ -160,23 +158,34 @@ const Home: FC = () => {
               <div className="game-cards">
                 <div className="game-card" data-game="baseball" onClick={() => handleGameSelection('baseball')}>
                   <div className="game-icon">⚾</div>
-                  <div className="game-content"><h4 className="game-title">숫자야구</h4><p className="game-description">상대방의 비밀 숫자를 먼저 맞추는 클래식 두뇌 게임입니다.</p></div>
-                </div>
-                <div className="game-card" data-game="omok" onClick={() => handleGameSelection('omok')}>
-                  <div className="game-icon">⚫⚪</div>
-                  <div className="game-content"><h4 className="game-title">오목</h4><p className="game-description">흑돌과 백돌, 다섯 개의 돌을 나란히 놓아 승리를 쟁취하세요.</p></div>
+                  <div className="game-content">
+                    <h4 className="game-title">숫자야구</h4>
+                    <p className="game-description">상대방의 숫자를 추리해보세요</p>
+                  </div>
                 </div>
                 <div className="game-card" data-game="sudoku" onClick={() => handleGameSelection('sudoku')}>
                   <div className="game-icon">🧩</div>
-                  <div className="game-content"><h4 className="game-title">스도쿠</h4><p className="game-description">논리적으로 숫자를 채워 9x9 그리드를 완성하는 싱글/멀티 플레이 게임입니다.</p></div>
+                  <div className="game-content">
+                    <h4 className="game-title">스도쿠</h4>
+                    <p className="game-description">논리 퍼즐의 정석</p>
+                  </div>
+                </div>
+                <div className="game-card" data-game="omok" onClick={() => handleGameSelection('omok')}>
+                  <div className="game-icon">⭕❌</div>
+                  <div className="game-content">
+                    <h4 className="game-title">오목</h4>
+                    <p className="game-description">먼저 다섯 개를 만들어보세요</p>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
         </main>
-        
+
         {renderModals()}
       </div>
     </>
   );
-}
+};
+
+export default Home;
