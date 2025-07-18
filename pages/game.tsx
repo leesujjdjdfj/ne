@@ -1,6 +1,6 @@
 // /pages/game.tsx
 
-import { useState, useEffect, FC, CSSProperties } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -47,7 +47,7 @@ class SudokuGenerator {
     this.solveSudoku(solution);
 
     const puzzle = solution.map(row => [...row]);
-    const emptyCells = { easy: 35, medium: 45, hard: 55 }[difficulty] || 35;
+    const emptyCells = { easy: 35, medium: 45, hard: 55 }[difficulty as 'easy' | 'medium' | 'hard'] || 35;
     
     let removed = 0;
     while (removed < emptyCells) {
@@ -66,7 +66,6 @@ class SudokuGenerator {
 // 숫자야구 싱글플레이 컴포넌트
 // ==================================================================
 const BaseballSinglePlayer: FC<{ nickname: string; gameDigits: number }> = ({ nickname, gameDigits }) => {
-  const router = useRouter();
   const maxTurns = gameDigits === 3 ? 15 : gameDigits === 4 ? 25 : 50;
 
   const [computerSecret, setComputerSecret] = useState('');
@@ -295,11 +294,10 @@ const SudokuPlayer: FC<{ nickname: string; difficulty: string; mode: string; roo
                 <div className="sudoku-board-container">
                     {board.length > 0 ? (
                         <div className="sudoku-board">
-                            {board.map((row, rIdx) => row.map((cell, cIdx) => {
-                                const isGiven = cell !== 0;
-                                const userValue = userBoard[rIdx][cIdx];
+                            {userBoard.map((row, rIdx) => row.map((cell, cIdx) => {
+                                const isGiven = board[rIdx][cIdx] !== 0;
                                 const isSelected = selectedCell?.row === rIdx && selectedCell?.col === cIdx;
-                                const isError = userValue !== 0 && !isGiven && userValue !== solution[rIdx][cIdx];
+                                const isError = cell !== 0 && !isGiven && cell !== solution[rIdx][cIdx];
                                 
                                 let cellClass = "sudoku-cell";
                                 if (isGiven) cellClass += " given";
@@ -308,7 +306,7 @@ const SudokuPlayer: FC<{ nickname: string; difficulty: string; mode: string; roo
                                 if ((cIdx + 1) % 3 === 0 && cIdx < 8) cellClass += " border-right-thick";
                                 if ((rIdx + 1) % 3 === 0 && rIdx < 8) cellClass += " border-bottom-thick";
 
-                                return (<div key={`${rIdx}-${cIdx}`} className={cellClass} onClick={() => handleCellClick(rIdx, cIdx)}>{userValue !== 0 ? userValue : ''}</div>);
+                                return (<div key={`${rIdx}-${cIdx}`} className={cellClass} onClick={() => handleCellClick(rIdx, cIdx)}>{cell !== 0 ? cell : ''}</div>);
                             }))}
                         </div>
                     ) : (<div>Loading...</div>)}
